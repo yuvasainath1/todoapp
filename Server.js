@@ -68,10 +68,7 @@ app.post('/signin', async(req,res)=>{
 })
     app.post('/todos',async(req,res)=>{
         let requsername;
-        console.log("iwillsucceed");
         const authHeader=req.headers.authorization;
-        console.log("iwillsecondsucceed");
-        console.log(req.headers);
         if(authHeader){
             const token=authHeader;
             jwt.verify(token,Secret,(err,user)=>{
@@ -85,7 +82,7 @@ app.post('/signin', async(req,res)=>{
             res.sendStatus(401);
         }
         const userpub=await User.findOne({username:requsername});
-        console.log(requsername);
+        // console.log(requsername);
         if(req.body.title===""){
             res.status(401).json({message:"Todo Cant be added without a title"})
         }else{
@@ -94,7 +91,7 @@ app.post('/signin', async(req,res)=>{
                 description:req.body.description,
                 id:Math.floor(Math.random()*100000),
             }
-            console.log(newtodo);
+            // console.log(newtodo);
             userpub.todoslist.push(newtodo);
             await userpub.save();
             res.json({message: "New Todo has been added"});
@@ -150,7 +147,7 @@ app.post('/signin', async(req,res)=>{
             jwt.verify(token,Secret,(err,user)=>{
                 if(err)res.status(403).send();
                 else{
-                    console.log(user);
+                    // console.log(user);
                     requsername= user.username;
                 }
             })
@@ -160,11 +157,14 @@ app.post('/signin', async(req,res)=>{
         const userpub=await User.findOne({username:requsername});
         for(let i of userpub.todoslist){
             if(i.id==req.params.id){
-                i.title=req.headers.title;
-                i.description=req.headers.description;
+                i.title=req.body.title;
+                i.description=req.body.description;
                 break;
             }
         }
+        // console.log(userpub);
+        // console.log(req.body.title);
+        // console.log(req.body.description);
         await userpub.save();
         res.json({message:"todo with given id is updated in the list"});
     })

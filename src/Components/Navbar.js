@@ -1,6 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 export default function Navbar(props) {
+  const signingout=()=>{
+    localStorage.clear();
+  }
   return (
     <>
         <nav className="navbar navbar-expand-lg  bg-dark" style={{padding:'1%'}}>
@@ -17,14 +20,16 @@ export default function Navbar(props) {
                 <li className="nav-item">
                 <Link className="nav-link text-light" aria-current="page" to="/signin">{props.name2}</Link>
                 </li>
-                <li className="nav-item">
-                <Link className="nav-link text-light" aria-current="page" to="/signout">{props.name3}</Link>
-                </li>
-                
+            </ul>
+            </div>
+            <div>
+            <ul className="navbar-nav">
+            <li className="nav-item">
+                <Link className="nav-link text-light" aria-current="page" to="/signout" onClick={signingout}>{props.name3}</Link>
+            </li>
             </ul>
             </div>
         </div>
-        
         </nav>
     </>
   )
