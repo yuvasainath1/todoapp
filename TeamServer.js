@@ -82,8 +82,16 @@ function funcutil(req,res){
 app.post('/signup',async(req,res)=>{
     const {tusername, tpassword,name}=req.body;
     const team=await Team.findOne({tusername});
+    const ttt=await Team.findOne({tusername,tpassword});
+    if(ttt){
+        // console.log("hurray");
+    }
+    else{
+        return res.status(403).send("Team Username already exists");
+    }
     if(team){
         let tem=false;
+        // if(req.body.tusername!==team.tpassword) return res.status(403).send("Team Username already exists");
         for(let i of team.tUsers){
             if(i.name===name){
                 tem=true;
@@ -151,6 +159,11 @@ app.get('/todos',teamauthentication,async(req,res)=>{
     let obj;
     obj=funcutil(req,res);
     const userpub=await Team.findOne({tusername:obj.teamname});
+    for(let i of userpub.ttodoslist){
+        let t=i.added_by;
+        if(t.substring(0,10)!=="updated by")
+        i.added_by='added by ' +i.added_by;
+    }
     res.json(userpub.ttodoslist);
 })
 app.delete('/todos/:id',teamauthentication,async(req,res)=>{

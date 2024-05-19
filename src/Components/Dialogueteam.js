@@ -8,14 +8,10 @@ function Dialog({ isOpen, onClose }) {
     const changingdescription=(e)=>{
         setdescription(e.target.value);
     }
-    const temp=()=>{
-        console.log( document.getElementById("updatedtitle").value);
-        console.log( document.getElementById("updateddescription").value)
-        console.log(localStorage.getItem('reqid'));
-    }
+    
     if (!isOpen) return null;
     const getTodos=()=>{
-        fetch('http://localhost:3000/todos', {
+        fetch('http://localhost:5173/todos', {
           method: 'GET', 
           headers: {
            'Content-Type': 'application/json', 
@@ -40,10 +36,10 @@ function Dialog({ isOpen, onClose }) {
     const updating=()=>{
         let id=localStorage.getItem('reqid');
         const obj={
-          'title': document.getElementById("updatedtitle").value,
-          'description': document.getElementById("updateddescription").value
+          'title': document.getElementById("updatedteamtitle").value,
+          'description': document.getElementById("updatedteamdescription").value
         }
-        fetch('http://localhost:3000/todos/'+id, {
+        fetch('http://localhost:5173/todos/'+id, {
           method: 'PUT', 
           headers: {
            'Content-Type': 'application/json', 
@@ -58,10 +54,11 @@ function Dialog({ isOpen, onClose }) {
         })
         .then(data => {
           console.log('Update request successful:', data);
-          setTimeout(() => {}, 500);
-          getTodos();
-          setTimeout(() => {}, 500);
-           window.location.href='http://localhost:3001/form'
+        //   alert('Updated todolist');
+        setTimeout(() => { }, 500);
+        getTodos();
+        setTimeout(() => { }, 500);
+           window.location.href='http://localhost:3001/formteam'
         })
         .catch(error => {
           alert(error);
@@ -96,7 +93,7 @@ function Dialog({ isOpen, onClose }) {
                 </label>
                 <input
                   type="email"
-                  id="updatedtitle"
+                  id="updatedteamtitle"
                   className="form-control"
                   placeholder="Name of Work"
                   value={title}
@@ -112,7 +109,7 @@ function Dialog({ isOpen, onClose }) {
                 </label>
                 <textarea
                   className="form-control"
-                  id="updateddescription"
+                  id="updatedteamdescription"
                   rows="2"
                   value={description}
                   onChange={changingdescription}

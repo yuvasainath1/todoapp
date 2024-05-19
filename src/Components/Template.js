@@ -68,10 +68,10 @@ export default function Loginteam(props) {
     return (
         <>
       <div className='container' style={{ padding: '2%', outline: "1px solid black", marginTop: '5%', width: '40%' }}>
-        <center><h2>Sign In</h2></center>
+        <center><h2>{props.name}</h2></center>
         <div style={{ display: 'flex', justifyContent: 'space-evenly', marginTop: '4%' }}>
           <h6 className="mb-0 pb-3"><a role='button' onClick={handleIndividualClick}>For Individual</a></h6>
-          <h6 className="mb-0 pb-3"><a role='button' onClick={handleTeamClick}>For Team</a></h6>
+          <h6 className="mb-0 pb-3"><a role='button' onClick={handleTeamClick}>For Team/Family</a></h6>
         </div>
         <div className={containerClass}>
           <div>
@@ -95,7 +95,7 @@ export default function Loginteam(props) {
           </div>
           <div id="passwordHelpBlock" className="form-text">
             <div>
-              <button type="submit" className="btn btn-dark mb-3 btn-sm" style={{ marginTop: '1%' }}>Sign In</button>
+              <button type="submit" className="btn btn-dark mb-3 btn-sm" style={{ marginTop: '1%' }} onClick={props.signing2}>{props.name}</button>
             </div>
           </div>
         </div>
@@ -117,7 +117,7 @@ export default function Loginteam(props) {
     </div>
     <div id="passwordHelpBlock" className="form-text">
      <div>
-    <button type="submit" className="btn btn-dark mb-3 btn-sm" style={{marginTop:'3%'}}  onClick={props.signing}>SignIn</button>
+    <button type="submit" className="btn btn-dark mb-3 btn-sm" style={{marginTop:'3%'}}  onClick={props.signing}>{props.name}</button>
     </div>
      </div>
      <div>
@@ -126,7 +126,7 @@ export default function Loginteam(props) {
           <Temo/>
         </center>
       </div>
-      </div>
+      </div>  
       </div>
     </>
       )

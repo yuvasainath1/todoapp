@@ -5,10 +5,11 @@ import Enter from './Components/Enter';
 import Carousel from './Components/Carousel';
 import Form from './Components/Form';
 import Logout from './Components/Logout';
+import Formteam from './Components/Formteam'
 
 import { BrowserRouter as Router, Routes, Route, } from 'react-router-dom';
-import Newform from './Components/Dialogue';
-import Loginteam from './Components/Loginteam';
+
+
 function App() {
   return (
     <>
@@ -20,6 +21,7 @@ function App() {
         {/*  <Route  exact path='/signin' element={<Temo/>}/> */}
         <Route exact path='/form' element={<><Navbar name3='Signout'></Navbar>{localStorage.getItem('token') ? <Form /> : <Logout />}</>}/>
         <Route exact path='/signout' element={<><Navbar name1="SignUp" name2="SignIn"></Navbar><Logout/></>}/>
+        <Route exact path='/formteam' element={<><Navbar name3='Signout'></Navbar>{localStorage.getItem('token') ? <Formteam /> : <Logout />}</>}/>
       </Routes>
     </Router>     
     </>

@@ -1,9 +1,9 @@
 import React,{useState} from 'react'
-import Dialogue from './Dialogue'
+import Dialogue from './Dialogueteam'
 
 export default function Form() {
   const deleting=(id)=>{
-    fetch('http://localhost:3000/todos/'+id, {
+    fetch('http://localhost:5173/todos/'+id, {
       method: 'DELETE', 
       headers: {
        'Content-Type': 'application/json', 
@@ -22,7 +22,7 @@ export default function Form() {
       setTimeout(() => {}, 500);
       getTodos();
       setTimeout(() => {}, 500);
-       window.location.href='http://localhost:3001/form'
+       window.location.href='http://localhost:3001/formteam'
     })
     .catch(error => {
       alert(error);
@@ -32,10 +32,10 @@ export default function Form() {
   
   const addToList = () => {
     const obj={
-      'title': document.getElementById("title").value,
-      'description': document.getElementById("description").value
+      'title': document.getElementById("teamTitle").value,
+      'description': document.getElementById("teamDescription").value,
     }
-    fetch('http://localhost:3000/todos', {
+    fetch('http://localhost:5173/todos', {
       method: 'POST', 
       headers: {
        'Content-Type': 'application/json', 
@@ -52,19 +52,19 @@ export default function Form() {
     .then((data) => {
       console.log('POST request successful:', data);
       alert('Added todo to the todolist');
-      setTimeout(() => {}, 500);
-      getTodos();
-      setTimeout(() => {}, 500);
-        window.location.href='http://localhost:3001/form';
+        setTimeout(() => {}, 500);
+        getTodos();
+        setTimeout(() => {}, 500);
+        window.location.href='http://localhost:3001/formteam';
        
     })
     .catch(error => {
-      alert(error);
+    //   alert(error);
       console.error('Error:', error);
     });
   };
   const getTodos=()=>{
-    fetch('http://localhost:3000/todos', {
+    fetch('http://localhost:5173/todos', {
       method: 'GET', 
       headers: {
        'Content-Type': 'application/json', 
@@ -79,14 +79,13 @@ export default function Form() {
     })
     .then(data => {
       localStorage.setItem('todos',JSON.stringify(data));
-      
     })
     .catch(error => {
       console.log("error");
     });
   }
   if(1===1){
-    setTimeout(() => {}, 750);
+      setTimeout(() => {}, 750);
     getTodos(); 
   }
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -105,11 +104,11 @@ export default function Form() {
     <div className="container" style={{'marginBottom':'2%',}}>
         <div className="mb-3 my-4">
         <label htmlFor="exampleFormControlInput1" className="form-label" >Title</label>
-        <input type="email"  id="title" className="form-control"  placeholder="Name of Work"/>
+        <input type="email"  id="teamTitle" className="form-control"  placeholder="Name of Work"/>
         </div>
         <div className="mb-3">
         <label htmlFor="exampleFormControlTextarea1" className="form-label">Description</label>
-        <textarea className="form-control" id="description" rows="2"></textarea>
+        <textarea className="form-control" id="teamDescription" rows="2"></textarea>
         </div>
         <div>
         <button className="btn btn-outline-success btn-sm text-dark" type="submit" onClick={() => { addToList();}}>Add To List</button>
@@ -120,8 +119,8 @@ export default function Form() {
       <div className="col-sm-3" style={{'marginTop':'0.3%', 'marginBottom':'0.3%'}}  key={element.id}>
         <div className="card">
           <div className="card-body">
-            <h5 className="card-title">{element.title}</h5>
-            <p className="card-text">{element.description}</p>
+            <h5 className="card-title">{element.title} </h5> 
+            <p className="card-text">{element.description}</p> 
             <a  className="btn btn-primary btn-sm"  style={{'margin':'0 5px'}} onClick={()=>{deleting(element.id)}} >Delete</a>
             <a
                 id='update'
@@ -132,6 +131,9 @@ export default function Form() {
                 Update
             </a>
           </div>
+        <div class="card-footer text-body-secondary">
+        <small>{element.added_by}</small>
+        </div>
         </div>
       </div>
     ))}
