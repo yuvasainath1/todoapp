@@ -13,6 +13,7 @@ app.use(express.json())
 app.use(cors())
 app.use(bodyparser.json())
 const Secret="I will succeeD.Its just a matter of tIme"
+
 const userschema=new mongoose.Schema({
     username:String,
     password: String,
@@ -22,10 +23,9 @@ const userschema=new mongoose.Schema({
             id:Number
         }],
 })
-// const todosschema=new mongoose.Schema({
-// })
+
+
 const User = mongoose.model('User', userschema);
-// const Todo = mongoose.model('Todo', todosschema);
 mongoose.connect(process.env.connect_to_mongodb);
 const userauthentication=(req,res,next)=>{
     const authHeader=req.headers.authorization;
@@ -41,6 +41,23 @@ const userauthentication=(req,res,next)=>{
     }else{
         res.sendStatus(401);
     }
+}
+function funcutil(req,res){
+    let requsername;
+        const authHeader=req.headers.authorization;
+        if(authHeader){
+            const token=authHeader;
+            jwt.verify(token,Secret,(err,user)=>{
+                if(err)res.status(403).send();
+                else{
+                    // console.log(user);
+                    requsername= user.username;
+                }
+            })
+        }else{
+            res.sendStatus(401);
+        }
+    return requsername;
 }
 app.post('/signup',async(req,res)=>{
     const {username, password}=req.body;
@@ -68,19 +85,7 @@ app.post('/signin', async(req,res)=>{
 })
     app.post('/todos',async(req,res)=>{
         let requsername;
-        const authHeader=req.headers.authorization;
-        if(authHeader){
-            const token=authHeader;
-            jwt.verify(token,Secret,(err,user)=>{
-                if(err)res.status(403).send();
-                else{
-                    // console.log(user);
-                    requsername= user.username;
-                }
-            })
-        }else{
-            res.sendStatus(401);
-        }
+        requsername=funcutil(req,res);
         const userpub=await User.findOne({username:requsername});
         // console.log(requsername);
         if(req.body.title===""){
@@ -99,37 +104,13 @@ app.post('/signin', async(req,res)=>{
     })
     app.get('/todos',userauthentication,async(req,res)=>{
         let requsername;
-        const authHeader=req.headers.authorization;
-        if(authHeader){
-            const token=authHeader;
-            jwt.verify(token,Secret,(err,user)=>{
-                if(err)res.status(403).send();
-                else{
-                    // console.log(user);
-                    requsername= user.username;
-                }
-            })
-        }else{
-            res.sendStatus(401);
-        }
+        requsername=funcutil(req,res);
         const userpub=await User.findOne({username:requsername});
         res.json(userpub.todoslist);
     })
     app.delete('/todos/:id',userauthentication,async(req,res)=>{
         let requsername;
-        const authHeader=req.headers.authorization;
-        if(authHeader){
-            const token=authHeader;
-            jwt.verify(token,Secret,(err,user)=>{
-                if(err)res.status(403).send();
-                else{
-                    // console.log(user);
-                    requsername= user.username;
-                }
-            })
-        }else{
-            res.sendStatus(401);
-        }
+        requsername=funcutil(req,res);
         const userpub=await User.findOne({username:requsername});
         let newlist=[];
         for(let i of userpub.todoslist){
@@ -141,19 +122,7 @@ app.post('/signin', async(req,res)=>{
     })
     app.put('/todos/:id',userauthentication,async(req,res)=>{
         let requsername;
-        const authHeader=req.headers.authorization;
-        if(authHeader){
-            const token=authHeader;
-            jwt.verify(token,Secret,(err,user)=>{
-                if(err)res.status(403).send();
-                else{
-                    // console.log(user);
-                    requsername= user.username;
-                }
-            })
-        }else{
-            res.sendStatus(401);
-        }
+        requsername=funcutil(req,res);
         const userpub=await User.findOne({username:requsername});
         for(let i of userpub.todoslist){
             if(i.id==req.params.id){
